@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: meta-odoo-webhook
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port 10000"
+    envVars:
+      - key: ODOO_URL
+        value: https://triton-homes.odoo.com
+      - key: ODOO_DB
+        value: triton-homes
+      - key: ODOO_API_KEY
+        sync: false
+      - key: ODOO_USER_ID
+        value: "6"
