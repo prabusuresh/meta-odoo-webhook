@@ -8,11 +8,18 @@ app = FastAPI()
 def read_root():
     return {"status": "Webhook is live"}
 
+from fastapi import Request
+
 @app.get("/webhook")
-def verify(token: str = "", challenge: str = ""):
+def verify_webhook(request: Request):
+    from fastapi.responses import PlainTextResponse
+    token = request.query_params.get("hub.verify_token")
+    challenge = request.query_params.get("hub.challenge")
+
     if token == "verify_token":
-        return int(challenge)
+        return PlainTextResponse(content=challenge, status_code=200)
     return {"error": "Invalid verification token"}
+
 
 @app.post("/webhook")
 async def receive_lead(request: Request):
